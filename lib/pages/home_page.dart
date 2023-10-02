@@ -4,6 +4,7 @@ import 'package:chat_app1/modals/userModals.dart';
 import 'package:chat_app1/pages/ChatRoomPage.dart';
 import 'package:chat_app1/pages/SearchPage.dart';
 import 'package:chat_app1/pages/login.dart';
+import 'package:chat_app1/pages/owner_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -102,25 +103,111 @@ class _HomePageState extends State<HomePage> {
     //   ),
     // );
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Chat App"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.popUntil(context, (route) => route.isFirst);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return LoginPage();
-                }),
-              );
-            },
-            icon: Icon(Icons.exit_to_app),
-          ),
-        ],
-      ),
+      appBar: AppBar(centerTitle: true, title: Text("Chat App"), actions: [
+        //IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+        IconButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.popUntil(context, (route) => route.isFirst);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return LoginPage();
+              }),
+            );
+          },
+          icon: Icon(Icons.exit_to_app),
+        ),
+        //   IconButton(onPressed: (
+
+        //   ) {}, icon: Icon(Icons.more_vert)),
+        // ],
+        IconButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  // title: Text("Setting"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Add options or actions you want in the dialog
+                      ListTile(
+                        title: Text(
+                          "New group",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          // Handle Option 1
+                          Navigator.pop(context); // Close the dialog
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          "New broadcast",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          // Handle Option 2
+                          Navigator.pop(context); // Close the dialog
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Linked devices",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          // Handle Option 2
+                          Navigator.pop(context); // Close the dialog
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Starred messages",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          // Handle Option 2
+                          Navigator.pop(context); // Close the dialog
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Payment",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onTap: () {
+                          // Handle Option 2
+                          Navigator.pop(context); // Close the dialog
+                        },
+                      ),
+                      ListTile(
+                        title: Text(
+                          "Setting",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          // Handle Option 2
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OwnerProfile(
+                                        userModal: widget.userModal,
+                                      ))); // Close the dialog
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+          icon: Icon(Icons.more_vert),
+        )
+      ]),
       body: SafeArea(
         child: Container(
           child: StreamBuilder(

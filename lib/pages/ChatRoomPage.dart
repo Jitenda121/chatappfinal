@@ -1,6 +1,5 @@
 import 'dart:developer';
-
-//import 'package:chat_app/main.dart';
+import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app1/main.dart';
 import 'package:chat_app1/modals/userModals.dart';
@@ -9,13 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../modals/ChatRoomModal.dart';
 import '../modals/Messagemodel.dart';
-//import 'package:flutter_application_1/main.dart';
-//import 'package:flutter_application_1/modals/ChatRoomModal.dart';
-//import 'package:flutter_application_1/modals/Messagemodel.dart';
-//import 'package:flutter_application_1/modals/userModals.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final UserModal targetUser;
@@ -29,7 +23,6 @@ class ChatRoomPage extends StatefulWidget {
       required this.chatroom,
       required this.userModal,
       required this.firebaseUser});
-  //const ChatRoomPage({super.key});
 
   @override
   State<ChatRoomPage> createState() => _ChatRoomPageState();
@@ -42,13 +35,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     messageController.clear();
 
     if (msg != "") {
-      //message send
+      DateTime currentDateTime = DateTime.now();
       MessageModel newMessage = MessageModel(
-          messageid: uuid.v1(),
-          sender: widget.targetUser.uid,
-          createdon: DateTime.now(),
-          text: msg,
-          seen: false);
+        messageid: uuid.v1(),
+        sender: widget.targetUser.uid,
+        createdon: currentDateTime,
+        text: msg,
+        seen: false,
+      );
       FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(widget.chatroom.chatroomid)
@@ -71,8 +65,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       appBar: AppBar(
         title: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => User_Profile()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => User_Profile(
+                          userModal: widget.userModal,
+                          targetUser: widget.targetUser,
+                        )));
           },
           child: Row(
             children: [
@@ -83,22 +82,43 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 child: GestureDetector(
                   onTap: () {
                     setState(() {});
-                    //  Navigator.pop(context);
-                    // CachedNetworkImage(
-                    //   imageUrl: widget.targetUser.profilepic.toString(),
-                    // );
                   },
-                  // child: CachedNetworkImage(
-                  //     imageUrl: widget.targetUser.profilepic.toString()),
                 ),
               ),
               SizedBox(
                 width: 10,
               ),
-              Text(widget.targetUser.fullname.toString())
+              Text(widget.targetUser.fullname.toString()),
             ],
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    children: <Widget>[
+                      SimpleDialogOption(
+                        onPressed: () {
+                          clearChat();
+                          //Navigator.pop(context); // Close the dialog
+                        },
+                        child: Text(
+                          'Clear Chat',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
           child: Container(
@@ -129,6 +149,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                               dataSnapshot.docs[index].data()
                                   as Map<String, dynamic>,
                             );
+
+                            //convert it to createon to dateformat
+                            String formattedTime = DateFormat('hh:mm a')
+                                .format(currentMessage.createdon);
                             return Dismissible(
                               key: UniqueKey(),
                               background: Container(
@@ -197,6 +221,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                     ? MainAxisAlignment.start
                                     : MainAxisAlignment.end,
                                 children: [
+                                  //Icon(Icons.done_all),
                                   Container(
                                     margin: EdgeInsets.symmetric(vertical: 2),
                                     padding: EdgeInsets.symmetric(
@@ -207,15 +232,41 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                           ? Theme.of(context)
                                               .colorScheme
                                               .secondary
-                                          : const Color.fromARGB(
-                                              255, 133, 223, 136),
+                                          : Color.fromARGB(255, 108, 219, 112),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Text(
-                                      currentMessage.text.toString(),
-                                      style: TextStyle(color: Colors.black),
+
+                                    // child: Text(
+                                    //   currentMessage.text.toString(),
+                                    //   formattatedTime,
+                                    //   style: TextStyle(color: Colors.black),
+                                    // ),
+                                    // Text(
+                                    //   formattedTime,
+                                    //   style: TextStyle(color: Colors.grey),
+                                    // ),
+
+                                    //Displaying timestamp with text
+                                    //if(currentmessage.sender==widget.user)
+                                    //Icon:()
+
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '${currentMessage.text.toString()} - $formattedTime',
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        if (currentMessage.sender !=
+                                            widget.userModal.uid)
+                                          Icon(
+                                            Icons.done_all,
+                                            color: const Color.fromARGB(
+                                                255, 4, 53, 93),
+                                          ),
+                                      ],
                                     ),
                                   ),
+                                  //Icon(Icons.done_all)
                                 ],
                               ),
                             );
@@ -311,7 +362,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       )),
                   IconButton(
                       onPressed: () {
+                        //Icon(Icons.done_all);
                         sendMessage();
+                        //Icon(Icons.done_all);
                       },
                       icon: Icon(Icons.send,
                           color: const Color.fromARGB(255, 4, 92, 7)))
@@ -325,4 +378,47 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       )),
     );
   }
+
+  void clearChat() async {
+    QuerySnapshot messagesSnapshot = await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(widget.chatroom.chatroomid)
+        .collection("messages")
+        .where("sender",
+            isNotEqualTo: widget
+                .userModal.uid) // Only get messages sent by the current user
+        .get();
+
+    for (QueryDocumentSnapshot messageSnapshot in messagesSnapshot.docs) {
+      await messageSnapshot.reference.delete();
+    }
+    await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(widget.chatroom.chatroomid)
+        .set({"lastmessage": "User's messages cleared"},
+            SetOptions(merge: true));
+
+    Navigator.pop(context); // Close the dialog
+  }
+  // void clearChat() async {
+  //   QuerySnapshot messagesSnapshot = await FirebaseFirestore.instance
+  //       .collection("chatrooms")
+  //       .doc(widget.chatroom.chatroomid)
+  //       .collection("messages")
+  //       .where("sender",
+  //           isNotEqualTo: widget
+  //               .userModal.uid) // Only get messages sent by the current user
+  //       .get();
+
+  //   for (QueryDocumentSnapshot messageSnapshot in messagesSnapshot.docs) {
+  //     await messageSnapshot.reference.delete();
+  //   }
+  //   await FirebaseFirestore.instance
+  //       .collection("chatrooms")
+  //       .doc(widget.chatroom.chatroomid)
+  //       .set({"lastmessage": "User's messages cleared"},
+  //           SetOptions(merge: true));
+
+  //   Navigator.pop(context); // Close the dialog
+  // }
 }
