@@ -24,15 +24,20 @@
 //   }
 // }
 
-
 class MessageModel {
-   late String? messageid;
-   late String? sender;
+  late String? messageid;
+  late String? sender;
   late String text;
   late bool seen;
- late  DateTime createdon; // Making createdon required
+  late DateTime createdon;
+  late final String? read;
+  late final String? toId;
+  late final String? fromId; // Making createdon required
 
   MessageModel({
+     this.fromId,
+     this.toId,
+     this.read,
     required this.messageid,
     required this.sender,
     required this.text,
@@ -46,6 +51,9 @@ class MessageModel {
     text = map["text"];
     seen = map["seen"];
     createdon = map["createdon"].toDate();
+    read = map["read"]?.toString();
+    fromId = map['fromId']?.toString();
+    toId = map['toId']?.toString();
   }
 
   Map<String, dynamic> toMap() {
@@ -55,6 +63,9 @@ class MessageModel {
       "text": text,
       "seen": seen,
       "createdon": createdon,
+      "read": read,
+      "fromId":fromId,
+      "toId":toId,
     };
   }
 }

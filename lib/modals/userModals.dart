@@ -10,6 +10,8 @@ class UserModal {
     email = map["email"];
     profilepic = map["profilepic"];
   }
+
+  //bool get isActive => null;
   Map<String, dynamic> toMap() {
     return {
       "uid": uid,

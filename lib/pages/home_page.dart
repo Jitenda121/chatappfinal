@@ -8,21 +8,17 @@ import 'package:chat_app1/pages/owner_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_application_1/modals/ChatRoomModal.dart';
-//import 'package:flutter_application_1/modals/UIHelper.dart';
-//import 'package:flutter_application_1/modals/firebasehelper.dart';
-//import 'package:flutter_application_1/modals/userModals.dart';
-//import 'package:flutter_application_1/pages/ChatRoomPage.dart';
-//import 'package:flutter_application_1/pages/SearchPage.dart';
-//import 'package:flutter_application_1/pages/login.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget {
   final UserModal userModal;
   final User firebaseUser;
+  ChatRoomModel? chatroom;
 
-  const HomePage(
-      {super.key, required this.userModal, required this.firebaseUser});
+  HomePage(
+      {super.key,
+      required this.userModal,
+      required this.firebaseUser,
+      this.chatroom});
   //const HomePage({super.key});
 
   @override
@@ -31,77 +27,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  // void initState() {
+  //   super.initState();
+  //   markMessagesAsSeen(widget.chatroom, widget.userModal);
+  // }
+
+  // void markMessagesAsSeen(ChatRoomModel? chatroom, UserModal userModal) async {
+  //   // Similar logic as in ChatRoomPage to mark messages as seen
+  //   QuerySnapshot messagesSnapshot = await FirebaseFirestore.instance
+  //       .collection("chatrooms")
+  //       .doc(widget.chatroom!.chatroomid)
+  //       .collection("messages")
+  //       .where("sender", isNotEqualTo: widget.userModal.uid)
+  //       .where("seen", isEqualTo: false)
+  //       .get();
+
+  //   for (QueryDocumentSnapshot messageSnapshot in messagesSnapshot.docs) {
+  //     await messageSnapshot.reference.update({"seen": true});
+  //   }
+
+  //   // Use setState if you need to update local state variables after marking messages as seen
+  //   setState(() {
+  //     // Update your local variables or state properties if needed
+  //   });
+  // }
+
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: AppBar(centerTitle: true, title: Text("Chat App")),
-    //   body: SafeArea(
-    //       child: Container(
-    //     child: StreamBuilder(
-    //       stream: FirebaseFirestore.instance
-    //           .collection("chatrooms")
-    //           .where("participant.${widget.userModal.uid}", isEqualTo: true)
-    //           .snapshots(),
-    //       builder: (context, snapshot) {
-    //         if (snapshot.connectionState == ConnectionState.active) {
-    //           if (snapshot.hasData) {
-    //             QuerySnapshot chatRoomSnapshot = snapshot.data as QuerySnapshot;
-    //             return ListView.builder(
-    //                 itemCount: chatRoomSnapshot.docs.length,
-    //                 itemBuilder: (context, index) {
-    //                   ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
-    //                       chatRoomSnapshot.docs[index].data()
-    //                           as Map<String, dynamic>);
-    //                   Map<String, dynamic> participants =
-    //                       chatRoomModel.participants!;
-    //                   List<String> participantkeys = participants.keys.toList();
-    //                   participantkeys.remove(widget.userModal.uid);
-    //                   return FutureBuilder(
-    //                     future:
-    //                         FirebaseHelper.getUserModalById(participantkeys[0]),
-    //                     builder: (context, userData) {
-    //                       UserModal targetUser = userData.data as UserModal;
-    //                       return ListTile(
-    //                         leading: CircleAvatar(
-    //                           backgroundImage: NetworkImage(
-    //                               targetUser.profilepic.toString()),
-    //                         ),
-    //                         title: Text(targetUser.fullname.toString()),
-    //                         subtitle:
-    //                             Text(chatRoomModel.lastMessage.toString()),
-    //                       );
-    //                     },
-    //                   );
-    //                 });
-    //           } else if (snapshot.hasError) {
-    //             return Center(
-    //               child: Text(snapshot.error.toString()),
-    //             );
-    //           } else {
-    //             return Center(
-    //               child: Text("No Chats"),
-    //             );
-    //           }
-    //         } else {
-    //           return Center(
-    //             child: CircularProgressIndicator(),
-    //           );
-    //         }
-    //       },
-    //     ),
-    //   )),
-    //   floatingActionButton: FloatingActionButton(
-    //     onPressed: () {
-    //       Navigator.push(context, MaterialPageRoute(
-    //         builder: (context) {
-    //           return SearchPage(
-    //               userModal: widget.userModal,
-    //               firebaseUser: widget.firebaseUser);
-    //         },
-    //       ));
-    //     },
-    //     child: Icon(Icons.search),
-    //   ),
-    // );
     return Scaffold(
       appBar: AppBar(centerTitle: true, title: Text("Chat App"), actions: [
         //IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
@@ -196,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(
                                   builder: (context) => OwnerProfile(
                                         userModal: widget.userModal,
+                                        firebaseUser: widget.firebaseUser,
                                       ))); // Close the dialog
                         },
                       ),
@@ -244,6 +196,9 @@ class _HomePageState extends State<HomePage> {
 
                               return ListTile(
                                 onTap: () {
+                                   // markMessageAsSeen(chatRoomModel,);
+                                  // markMessagesAsSeen(
+                                  //     widget.chatroom, widget.userModal);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) {
@@ -267,20 +222,12 @@ class _HomePageState extends State<HomePage> {
                                                 height: 300,
                                                 decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-
                                                   image: DecorationImage(
                                                       fit: BoxFit.cover,
                                                       image: NetworkImage(
                                                         targetUser.profilepic
                                                             .toString(),
                                                       )),
-                                                  // child: CircleAvatar(
-                                                  //   //radius: 5,
-                                                  //   backgroundImage: NetworkImage(
-                                                  //     targetUser.profilepic
-                                                  //         .toString(),
-                                                  //   ),
-                                                  // ),
                                                 )),
                                           );
                                         });
@@ -343,16 +290,27 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  // Future<void> signInwithGoogle() async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   final GoogleSignIn googleSignIn = GoogleSignIn();
-  //   final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-  //   final GoogleSignInAuthentication googleAuth =
-  //       await googleUser!.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-  //   // ignore: unused_local_variable
-  //   final UserCredential userCredential =
-  //       await _auth.signInWithCredential(credential);
+  // Future<void> markMessageAsUnseen(MessageModel message) async {
+  //    if (chatroom != null && message.seen && message.sender != widget.userModal.uid) {
+   
+  //   // if (message.seen && message.sender != widget.userModal.uid) {
+  //     // Update the 'seen' field of the specific message in Firestore
+  //     await FirebaseFirestore.instance
+  //         .collection("chatrooms")
+  //         .doc(widget.chatroom!.chatroomid)
+  //         .collection("messages")
+  //         .doc(message.messageid)
+  //         .update({"seen": false});
+  //   }
+  // }
+  // Future<void> markMessageAsSeen(message) async {
+  //    if (message!= null && message.seen && message.sender != widget.userModal.uid) {
+  //     await FirebaseFirestore.instance
+  //         .collection("chatrooms")
+  //         .doc(widget.chatroom)
+  //         .collection("messages")
+  //         .doc(message.messageid)
+  //         .update({"seen": true});
+  //   }
   // }
 }

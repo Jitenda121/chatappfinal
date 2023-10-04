@@ -1,63 +1,6 @@
-// import 'dart:io';
-
-// import 'package:chat_app1/modals/userModals.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-
-// class OwnerProfile extends StatefulWidget {
-//   final UserModal userModal;
-
-//   //final UserModal userModal;
-//   //final User firebaseUser;
-//   const OwnerProfile({super.key, required this.userModal});
-
-//   @override
-//   State<OwnerProfile> createState() => _OserProfileState();
-// }
-
-// class _OserProfileState extends State<OwnerProfile> {
-//   @override
-//   File? pickedImage;
-//   Widget build(BuildContext context) {
-//     // String? profilePicUrl = widget.usermodal.profilepic;
-//     return Scaffold(
-//       appBar: AppBar(
-//           backgroundColor: Color.fromARGB(255, 4, 90, 7),
-//           centerTitle: false,
-//           leading: BackButton(
-//             onPressed: () {
-//               Navigator.pop(context);
-//             },
-//           ),
-//           title: Text(
-//             "Profile",
-//             style: TextStyle(color: Colors.white),
-//           )),
-//       body: Column(
-//         children: [
-//           SizedBox(
-//             height: 16,
-//           ),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               CircleAvatar(
-//                 backgroundImage: NetworkImage(
-//                   widget.userModal.profilepic.toString(),
-//                 ),
-//                 backgroundColor: Colors.white,
-//                 radius: 110,
-//               ),
-//             ],
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:chat_app1/modals/userModals.dart';
+import 'package:chat_app1/pages/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
@@ -67,7 +10,13 @@ import 'package:image_picker/image_picker.dart';
 // ignore: camel_case_types
 class OwnerProfile extends StatefulWidget {
   final UserModal userModal;
-  const OwnerProfile({super.key, required this.userModal});
+  final User firebaseUser;
+
+  const OwnerProfile({
+    super.key,
+    required this.userModal,
+    required this.firebaseUser,
+  });
 
   @override
   State<OwnerProfile> createState() => _OwnerProfile();
@@ -89,6 +38,8 @@ class _OwnerProfile extends State<OwnerProfile> {
           leading: BackButton(
             onPressed: () {
               Navigator.pop(context);
+
+              //Navigator.popUntil(context, ModalRoute.withName('/HomePage'));
             },
           )),
       body: Column(
