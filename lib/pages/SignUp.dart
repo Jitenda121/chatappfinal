@@ -73,8 +73,12 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Container(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://i.pinimg.com/564x/1d/4e/4d/1d4e4d6bc5aeadcac5830d32636d3256.jpg"),
+                fit: BoxFit.cover)),
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Center(
           child: SingleChildScrollView(
@@ -92,7 +96,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 TextField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: "Email Address"),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: "Email Address"),
                 ),
                 SizedBox(
                   height: 10,
@@ -100,7 +107,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: InputDecoration(labelText: "Password"),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: "Password"),
                 ),
                 SizedBox(
                   height: 20,
@@ -108,7 +118,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 TextField(
                   controller: cPasswordController,
                   obscureText: true,
-                  decoration: InputDecoration(labelText: " Confirm Password"),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: " Confirm Password"),
                 ),
                 SizedBox(
                   height: 20,
@@ -123,29 +136,32 @@ class _SignUpPageState extends State<SignUpPage> {
                     //         builder: (context) => CompleteProfile()));
                   },
                   color: Theme.of(context).colorScheme.secondary,
-                )
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account?",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      CupertinoButton(
+                          child: Text(
+                            "Login In",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.blue),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          })
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-      )),
-      bottomNavigationBar: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Already have an account?",
-              style: TextStyle(fontSize: 16),
-            ),
-            CupertinoButton(
-                child: Text(
-                  "Login In",
-                  style: TextStyle(fontSize: 16),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                })
-          ],
         ),
       ),
     );

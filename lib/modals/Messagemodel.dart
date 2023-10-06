@@ -30,19 +30,24 @@ class MessageModel {
   late String text;
   late bool seen;
   late DateTime createdon;
-  late final String? read;
-  late final String? toId;
-  late final String? fromId; // Making createdon required
+  late String read;
+  late String? toId;
+  late String? fromId;
+  late String? imageUrl;
+  late String? isimage;
+  // Making createdon required
 
   MessageModel({
-     this.fromId,
-     this.toId,
-     this.read,
+    required this.fromId,
+    required this.toId,
+    required this.read,
     required this.messageid,
     required this.sender,
     required this.text,
     required this.seen,
-    required this.createdon, // Making createdon required
+    required this.createdon,
+    this.imageUrl,
+    this.isimage // Making createdon required
   });
 
   MessageModel.fromMap(Map<String, dynamic> map) {
@@ -51,9 +56,11 @@ class MessageModel {
     text = map["text"];
     seen = map["seen"];
     createdon = map["createdon"].toDate();
-    read = map["read"]?.toString();
-    fromId = map['fromId']?.toString();
-    toId = map['toId']?.toString();
+    read = map["read"].toString();
+    fromId = map['fromId'].toString();
+    toId = map['toId'].toString();
+    imageUrl = map['imageUrl'];
+    isimage = map['isImage'];
   }
 
   Map<String, dynamic> toMap() {
@@ -64,8 +71,9 @@ class MessageModel {
       "seen": seen,
       "createdon": createdon,
       "read": read,
-      "fromId":fromId,
-      "toId":toId,
+      "fromId": fromId,
+      "toId": toId,
+      "imageUrl": imageUrl,
     };
   }
 }

@@ -1,13 +1,10 @@
 import 'package:chat_app1/modals/userModals.dart';
-import 'package:chat_app1/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
-// ignore: camel_case_types
 class OwnerProfile extends StatefulWidget {
   final UserModal userModal;
   final User firebaseUser;
@@ -22,7 +19,6 @@ class OwnerProfile extends StatefulWidget {
   State<OwnerProfile> createState() => _OwnerProfile();
 }
 
-// ignore: camel_case_types
 class _OwnerProfile extends State<OwnerProfile> {
   File? pickedImage;
   @override
@@ -38,298 +34,358 @@ class _OwnerProfile extends State<OwnerProfile> {
           leading: BackButton(
             onPressed: () {
               Navigator.pop(context);
-
-              //Navigator.popUntil(context, ModalRoute.withName('/HomePage'));
             },
           )),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          Stack(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 110,
-                  backgroundImage: NetworkImage(
-                    widget.userModal.profilepic.toString(),
-                  ),
-                ),
-              ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //         image: NetworkImage(
+        //             "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80"),
+        //         fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 15,
             ),
-            Positioned(
-              top: 155,
-              left: 260,
-              child: InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20.0))),
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: 300,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 7,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: Row(
+            Stack(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 110,
+                    backgroundImage: NetworkImage(
+                      widget.userModal.profilepic.toString(),
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                top: 155,
+                left: 260,
+                child: InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20.0))),
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: 300,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Profile photo",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            MediaQuery.of(context).size.height *
-                                                0.02,
-                                        // fontSize: MediaQuery.of(context).size.height.*.0.5
+                                    Container(
+                                      height: 7,
+                                      width: 50,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20.0),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Profile photo",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.02,
+                                          // fontSize: MediaQuery.of(context).size.height.*.0.5
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          .5,
-                                    ),
-                                    Icon(
-                                      Icons.delete,
-                                      size: 30,
-                                      color: Colors.grey,
-                                    )
-                                  ],
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .5,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 40.0),
-                                child: Row(
-                                  children: [
-                                    Column(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundColor: Colors.grey,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                Navigator.pop(context);
-                                                await getImage(
-                                                    ImageSource.camera);
-                                              },
-                                              child: Icon(
-                                                Icons.camera_alt,
-                                                size: 30,
-                                                color: Color.fromARGB(
-                                                    255, 3, 110, 76),
-                                              ),
-                                            ),
-                                            radius: 39,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Camera",
-                                          style: TextStyle(fontSize: 20),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
-                                    Column(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundColor: Colors.grey,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                await getImage(
-                                                    ImageSource.gallery);
-                                                Navigator.pop(context);
-                                              },
-                                              child: Icon(
-                                                Icons.browse_gallery_rounded,
-                                                size: 30,
-                                                color: Color.fromARGB(
-                                                    255, 3, 110, 76),
-                                              ),
-                                            ),
-                                            radius: 39,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Gallery",
-                                          style: TextStyle(fontSize: 20),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 50,
-                                    ),
-                                    Column(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundColor: Colors.grey,
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            child: InkWell(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Icon(
-                                                Icons.cancel,
-                                                size: 33,
-                                                color: Color.fromARGB(
-                                                    255, 3, 110, 76),
-                                              ),
-                                            ),
-                                            radius: 39,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Cancel",
-                                          style: TextStyle(fontSize: 20),
-                                        )
-                                      ],
-                                    )
-                                  ],
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              )
-                            ],
-                          ),
-                        );
-                      });
-                },
-                child: CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 13, 186, 131),
-                  radius: 30,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
-                    size: 30,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 40.0),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Colors.grey,
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  Navigator.pop(context);
+                                                  await getImage(
+                                                      ImageSource.camera);
+                                                },
+                                                child: Icon(
+                                                  Icons.camera_alt,
+                                                  size: 30,
+                                                  color: Color.fromARGB(
+                                                      255, 3, 110, 76),
+                                                ),
+                                              ),
+                                              radius: 39,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "Camera",
+                                            style: TextStyle(fontSize: 20),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 50,
+                                      ),
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Colors.grey,
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  await getImage(
+                                                      ImageSource.gallery);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Icon(
+                                                  Icons.browse_gallery_rounded,
+                                                  size: 30,
+                                                  color: Color.fromARGB(
+                                                      255, 3, 110, 76),
+                                                ),
+                                              ),
+                                              radius: 39,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "Gallery",
+                                            style: TextStyle(fontSize: 20),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 50,
+                                      ),
+                                      Column(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: Colors.grey,
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Icon(
+                                                  Icons.cancel,
+                                                  size: 33,
+                                                  color: Color.fromARGB(
+                                                      255, 3, 110, 76),
+                                                ),
+                                              ),
+                                              radius: 39,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "Cancel",
+                                            style: TextStyle(fontSize: 20),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 13, 186, 131),
+                    radius: 30,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
+            ]),
+            SizedBox(
+              height: 10,
             ),
-          ]),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
-                  height: MediaQuery.of(context).size.width * .3,
+            Row(
+              children: [
+                Container(
+                    width: MediaQuery.of(context).size.width * 1.0,
+                    height: MediaQuery.of(context).size.width * .3,
+                    color: Colors.white,
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Column(children: [
+                            Icon(Icons.person, size: 28, color: Colors.black),
+                          ]),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //mainAxisAlignment: ,
+                          children: [
+                            Text(
+                              "Name",
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).size.height * .023,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                                  //fontWeight: FontWeight.w300,
+                                  ),
+                            ),
+                            // SizedBox(
+                            //   height: 3,
+                            // ),
+                            Text(
+                              widget.userModal.fullname.toString(),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "This is not your username or pin.This name",
+                              style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.height * .016,
+                                color: Color.fromARGB(255, 120, 118, 118),
+                              ),
+                            ),
+                            Text(
+                              "will be visible to your WhatsApp contacts.",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 120, 118, 118),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ))
+              ],
+            ),
+            Divider(),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.height * .46,
+                  height: 100,
                   color: Colors.white,
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 10,
+                        width: 15,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
-                        child: Column(children: [
-                          Icon(
-                            Icons.person,
-                            size: 25,
-                            color: Color.fromARGB(93, 4, 4, 4),
-                          ),
-                        ]),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.info,
+                              size: 30,
+                              color: Colors.black,
+                            )
+                          ],
+                        ),
                       ),
                       SizedBox(
-                        width: 15,
+                        width: 20,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        //mainAxisAlignment: ,
                         children: [
                           Text(
-                            "Name",
+                            "About",
                             style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * .020,
-                              color: Color.fromARGB(255, 120, 118, 118),
-                              //fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                          // SizedBox(
-                          //   height: 3,
-                          // ),
-                          Text(
-                            widget.userModal.fullname.toString(),
-                            style: TextStyle(fontSize: 20),
+                                fontSize:
+                                    MediaQuery.of(context).size.height * .025,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 3,
                           ),
                           Text(
-                            "This is not your username or pin.This name",
+                            "If you don't fight,you can't win.",
                             style: TextStyle(
-                              fontSize:
-                                  MediaQuery.of(context).size.height * .016,
-                              color: Color.fromARGB(255, 120, 118, 118),
-                            ),
-                          ),
-                          Text(
-                            "will be visible to your WhatsApp contacts.",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 120, 118, 118),
-                            ),
+                                fontSize:
+                                    MediaQuery.of(context).size.height * .022),
                           )
                         ],
                       ),
+                      SizedBox(
+                        width: 27,
+                      ),
                     ],
-                  ))
-            ],
-          ),
-          Divider(),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.height * .46,
-                height: 100,
-                color: Colors.white,
-                child: Row(
-                  children: [
+                  ),
+                )
+              ],
+            ),
+            Divider(),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 1,
+                  height: 90,
+                  color: Colors.white,
+                  child: Row(children: [
                     SizedBox(
                       width: 15,
                     ),
@@ -338,9 +394,9 @@ class _OwnerProfile extends State<OwnerProfile> {
                       child: Column(
                         children: [
                           Icon(
-                            Icons.perm_device_information_rounded,
-                            size: 25,
-                            color: Color.fromARGB(93, 4, 4, 4),
+                            Icons.phone,
+                            size: 26,
+                            color: Colors.black,
                           )
                         ],
                       ),
@@ -352,86 +408,31 @@ class _OwnerProfile extends State<OwnerProfile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "About",
+                          "Phone",
                           style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height * .020,
-                            color: Color.fromARGB(255, 120, 118, 118),
-                          ),
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.048,
+                              color: Colors.black),
                         ),
                         SizedBox(
-                          height: 3,
+                          height: 2,
                         ),
                         Text(
-                          "If you don't fight,you can't win.",
+                          "+91 93729145495",
                           style: TextStyle(
+                              fontWeight: FontWeight.w500,
                               fontSize:
-                                  MediaQuery.of(context).size.height * .022),
+                                  MediaQuery.of(context).size.width * 0.048),
                         )
                       ],
-                    ),
-                    SizedBox(
-                      width: 27,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          Divider(),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 1,
-                height: 90,
-                color: Colors.white,
-                child: Row(children: [
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          size: 20,
-                          color: Color.fromARGB(255, 120, 118, 118),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Phone",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.048,
-                          color: Color.fromARGB(255, 120, 118, 118),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        "+91 9372911595",
-                        style: TextStyle(
-                            fontSize:
-                                MediaQuery.of(context).size.width * 0.048),
-                      )
-                    ],
-                  )
-                ]),
-              )
-            ],
-          )
-        ],
+                    )
+                  ]),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -450,4 +451,9 @@ class _OwnerProfile extends State<OwnerProfile> {
       print("failed to pick image");
     }
   }
+
+  // void clear() {
+  //   pickedImage = null;
+  //   setState(() {});
+  // }
 }

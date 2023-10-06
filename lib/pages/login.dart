@@ -64,42 +64,44 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          child: Container(
+      body: Container(
+        decoration: BoxDecoration(
+            // image:
+            //     DecorationImage(image: AssetImage("assests/Rectangle 1.png")
+            // )
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://i.pinimg.com/564x/1d/4e/4d/1d4e4d6bc5aeadcac5830d32636d3256.jpg"),
+                fit: BoxFit.fill)),
         padding: EdgeInsets.symmetric(horizontal: 40),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Image.asset("assests/download.jpeg"),
+                // Image.asset("assests/download.jpeg"),
                 SizedBox(
                   height: 50,
                 ),
                 Text(
                   "Chat App",
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Color.fromARGB(255, 10, 123, 214),
                       fontSize: 50,
                       fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      prefixIcon: Icon(Icons.email),
-                      labelText: "Email Address"),
-                ),
+          
                 SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 TextFormField(
                   controller: passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)),
                       prefixIcon: Icon(Icons.lock),
@@ -115,177 +117,33 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => madara()));
-                    },
-                    child: Text(" OR Login with OTP")),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await signInWithGoogle();
-                      },
-                      child: Image.asset(
-                        "assests/download.png",
-                        width: 50,
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have a account?",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await signInWithFacebook();
-                      },
-                      child: Icon(
-                        Icons.facebook,
-                        size: 50,
-                        color: Colors.blue,
-                      ),
-                    )
-                  ],
-                )
+                      CupertinoButton(
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(fontSize: 20, color: Colors.red),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpPage()));
+                          })
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
-      )),
-      bottomNavigationBar: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Don't have a account?",
-              style: TextStyle(fontSize: 16),
-            ),
-            CupertinoButton(
-                child: Text(
-                  "Sign Up",
-                  style: TextStyle(fontSize: 16),
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()));
-                })
-          ],
-        ),
       ),
     );
-  }
-
-  Future<void> signInWithFacebook() async {
-    try {
-      final LoginResult loginResult = await FacebookAuth.instance.login();
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(loginResult.accessToken!.token);
-      final UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithCredential(facebookAuthCredential);
-
-      if (context.mounted) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return HomePage(
-              userModal: UserModal(), firebaseUser: userCredential.user!);
-        }));
-        debugPrint("Sign in with Facebook failed: ${e.toString()}");
-      }
-    } catch (e) {
-      // Handle and display the error to the user
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Sign in with Facebook failed: ${e.toString()}"),
-        duration: const Duration(seconds: 10),
-      )
-          // debugPrint("Sign in with Facebook failed: ${e.toString()}");
-          );
-    }
-  }
-  // Future<void> signInWithFacebook() async {
-  //   try {
-  //     // setState(() {
-  //     //   _isSigningIn = true; // Set signing in flag
-  //     // });
-
-  //     final LoginResult loginResult = await FacebookAuth.instance.login();
-  //     final OAuthCredential facebookAuthCredential =
-  //         FacebookAuthProvider.credential(loginResult.accessToken!.token);
-  //     final UserCredential userCredential = await FirebaseAuth.instance
-  //         .signInWithCredential(facebookAuthCredential);
-
-  //     if (context.mounted) {
-  //       Navigator.push(context,
-  //           MaterialPageRoute(builder: (context) => const PostScreen()));
-  //     }
-  //   } catch (e) {
-  //     // Handle and display the error to the user
-  //     // ignore: use_build_context_synchronously
-  //     //debugPrint("Sign in with Facebook failed: ${e.toString()}");
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text("Sign in with Facebook failed: ${e.toString()}"),
-  //         duration: const Duration(seconds: 60),
-  //       ),
-  //     );
-  //     debugPrint("Sign in with Facebook failed: ${e.toString()}");
-  //   }
-  //   // finally {
-  //   //   // setState(() {
-  //   //   //   _isSigningIn = false;
-  //   //   //   // Reset signing in flag
-  //   //   // });
-  //   // }
-  // }
-
-  // Future<void> signInwithGoogle() async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   final GoogleSignIn googleSignIn = GoogleSignIn();
-  //   final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-  //   final GoogleSignInAuthentication googleAuth =
-  //       await googleUser!.authentication;
-  //   final AuthCredential credential = GoogleAuthProvider.credential(
-  //       accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-  //   // ignore: unused_local_variable
-  //   final UserCredential userCredential =
-  //       await _auth.signInWithCredential(credential);
-  // }
-  Future<void> signInWithGoogle() async {
-    try {
-      FirebaseAuth _auth = FirebaseAuth.instance;
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-
-      // You can access the signed-in user using userCredential.user
-      User? user = userCredential.user;
-
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return HomePage(userModal: UserModal(), firebaseUser: user!);
-        },
-      ));
-
-      // Handle the successful sign-in here
-      // For example, you can show a success message or navigate to a new screen.
-    } catch (e) {
-      // Handle the error here
-      //debugPrint("Sign in with Google failed: ${e.toString()}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Sign in with Google failed: ${e.toString()}"),
-          duration: const Duration(seconds: 5),
-        ),
-      );
-      debugPrint("Sign in with Google failed: ${e.toString()}");
-    }
   }
 }

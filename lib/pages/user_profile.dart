@@ -18,6 +18,7 @@ class _User_ProfileState extends State<User_Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 5, 59, 7),
         title: Text(
           widget.targetUser.fullname.toString(), style: TextStyle(fontSize: 30),
           //widget.targetUser.profilepic.toString(),
@@ -29,180 +30,186 @@ class _User_ProfileState extends State<User_Profile> {
           },
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                  widget.targetUser.profilepic.toString(),
+      body: Container(
+        color: const Color.fromARGB(255, 1, 23, 42),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(
+                    widget.targetUser.profilepic.toString(),
+                  ),
+                  radius: 110,
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  widget.targetUser.fullname.toString(),
+                  style: TextStyle(fontSize: 40, color: Colors.white),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "+91 93729556595"
+                  // widget.targetUser.fullname.toString()
+                  ,
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.phone,
+                  size: 30,
+                  color: Color.fromARGB(255, 10, 148, 12),
                 ),
-                radius: 110,
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.targetUser.fullname.toString(),
-                style: TextStyle(fontSize: 40),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "+91 9372911595"
-                // widget.targetUser.fullname.toString()
-                ,
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Icon(
-                Icons.phone,
-                size: 40,
-                color: Color.fromARGB(255, 10, 148, 12),
-              ),
-              Icon(
-                Icons.video_call,
-                size: 40,
-                color: Color.fromARGB(255, 10, 148, 12),
-              ),
-              Icon(
-                Icons.payment_sharp,
-                size: 40,
-                color: Color.fromARGB(255, 10, 148, 12),
-              ),
-              Icon(
-                Icons.search,
-                size: 40,
-                color: Color.fromARGB(255, 10, 148, 12),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                "Audio",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Color.fromARGB(255, 14, 124, 16),
+                Icon(
+                  Icons.video_call,
+                  size: 30,
+                  color: Color.fromARGB(255, 10, 148, 12),
                 ),
-              ),
-              Text(
-                "Videos",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Color.fromARGB(255, 14, 124, 16),
-                  //color: Color.fromARGB(255, 10, 148, 12),
+                Icon(
+                  Icons.payment_sharp,
+                  size: 30,
+                  color: Color.fromARGB(255, 10, 148, 12),
                 ),
-              ),
-              Text("Pay",
+                Icon(
+                  Icons.search,
+                  size: 30,
+                  color: Color.fromARGB(255, 10, 148, 12),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Audio",
                   style: TextStyle(
                     fontSize: 20,
                     color: Color.fromARGB(255, 14, 124, 16),
-                    //Color.fromARGB(255, 10, 148, 12),
-                  )),
-              Text("Search",
+                  ),
+                ),
+                Text(
+                  "Videos",
                   style: TextStyle(
                     fontSize: 20,
                     color: Color.fromARGB(255, 14, 124, 16),
-                    // Color.fromARGB(255, 10, 148, 12),
-                  )),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Container(
-                  height: MediaQuery.of(context).size.height * .16,
-                  width: MediaQuery.of(context).size.width * 1,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Icon(
-                              Icons.block,
-                              size: 30,
-                              color: Colors.red,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Block",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.red,
+                    //color: Color.fromARGB(255, 10, 148, 12),
+                  ),
+                ),
+                Text("Pay",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 14, 124, 16),
+                      //Color.fromARGB(255, 10, 148, 12),
+                    )),
+                Text("Search",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 14, 124, 16),
+                      // Color.fromARGB(255, 10, 148, 12),
+                    )),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Container(
+                    height: MediaQuery.of(context).size.height * .16,
+                    width: MediaQuery.of(context).size.width * 1,
+                    color: const Color.fromARGB(255, 1, 23, 42),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 30,
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              widget.targetUser.fullname.toString(),
-                              style: TextStyle(
-                                fontSize: 30,
-                                color: Colors.red,
+                              Icon(
+                                Icons.block,
+                                size: 30,
+                                color: Colors.redAccent,
                               ),
-                            )
-                          ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Block",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                widget.targetUser.fullname.toString(),
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Icon(
-                              Icons.cancel,
-                              size: 30,
-                              color: Colors.red,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Cancel",
-                              style: TextStyle(
-                                fontSize: 30,
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Icon(
+                                Icons.cancel,
+                                size: 30,
                                 color: Colors.red,
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ))
-            ],
-          )
-          //Icon(Icons.block)
-        ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Cancel",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ))
+              ],
+            )
+            //Icon(Icons.block)
+          ],
+        ),
       ),
     );
   }

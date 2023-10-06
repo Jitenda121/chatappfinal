@@ -54,149 +54,166 @@ class _HomePageState extends State<HomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text("Chat App"), actions: [
-        //IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
-        IconButton(
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            Navigator.popUntil(context, (route) => route.isFirst);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) {
-                return LoginPage();
-              }),
-            );
-          },
-          icon: Icon(Icons.exit_to_app),
-        ),
-        //   IconButton(onPressed: (
-
-        //   ) {}, icon: Icon(Icons.more_vert)),
-        // ],
-        IconButton(
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  // title: Text("Setting"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Add options or actions you want in the dialog
-                      ListTile(
-                        title: Text(
-                          "New group",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Handle Option 1
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "New broadcast",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Handle Option 2
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Linked devices",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Handle Option 2
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Starred messages",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Handle Option 2
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Payment",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        onTap: () {
-                          // Handle Option 2
-                          Navigator.pop(context); // Close the dialog
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          "Setting",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        onTap: () {
-                          // Handle Option 2
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OwnerProfile(
-                                        userModal: widget.userModal,
-                                        firebaseUser: widget.firebaseUser,
-                                      ))); // Close the dialog
-                        },
-                      ),
-                    ],
-                  ),
+      appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 11, 22, 54),
+          centerTitle: true,
+          title: Text(
+            "Home Page",
+            style: TextStyle(fontSize: 28),
+          ),
+          actions: [
+            //IconButton(onPressed: () {}, icon: Icon(Icons.more_vert)),
+            IconButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.popUntil(context, (route) => route.isFirst);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  }),
                 );
               },
-            );
-          },
-          icon: Icon(Icons.more_vert),
-        )
-      ]),
-      body: SafeArea(
-        child: Container(
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("chatrooms")
-                .where("participants.${widget.userModal.uid}", isEqualTo: true)
-                .snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active) {
-                if (snapshot.hasData) {
-                  QuerySnapshot chatRoomSnapshot =
-                      snapshot.data as QuerySnapshot;
+              icon: Icon(Icons.exit_to_app),
+            ),
+            //   IconButton(onPressed: (
 
-                  return ListView.builder(
-                    itemCount: chatRoomSnapshot.docs.length,
-                    itemBuilder: (context, index) {
-                      ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
-                          chatRoomSnapshot.docs[index].data()
-                              as Map<String, dynamic>);
+            //   ) {}, icon: Icon(Icons.more_vert)),
+            // ],
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      // title: Text("Setting"),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Add options or actions you want in the dialog
+                          ListTile(
+                            title: Text(
+                              "New group",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onTap: () {
+                              // Handle Option 1
+                              Navigator.pop(context); // Close the dialog
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "New broadcast",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onTap: () {
+                              // Handle Option 2
+                              Navigator.pop(context); // Close the dialog
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Linked devices",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onTap: () {
+                              // Handle Option 2
+                              Navigator.pop(context); // Close the dialog
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Starred messages",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onTap: () {
+                              // Handle Option 2
+                              Navigator.pop(context); // Close the dialog
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Payment",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            onTap: () {
+                              // Handle Option 2
+                              Navigator.pop(context); // Close the dialog
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Setting",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () {
+                              // Handle Option 2
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => OwnerProfile(
+                                            userModal: widget.userModal,
+                                            firebaseUser: widget.firebaseUser,
+                                          ))); // Close the dialog
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: Icon(Icons.more_vert),
+            )
+          ]),
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: NetworkImage(
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR98CnYnV94dMQphX1B5Z25YfFUCASPsIDXJ4O_4m-oA0zae7pOafRNFNdcuAC1CYu1fq0&usqp=CAU"),
+                fit: BoxFit.cover)),
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("chatrooms")
+              .where("participants.${widget.userModal.uid}", isEqualTo: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                QuerySnapshot chatRoomSnapshot = snapshot.data as QuerySnapshot;
 
-                      Map<String, dynamic> participants =
-                          chatRoomModel.participants!;
+                return ListView.builder(
+                  itemCount: chatRoomSnapshot.docs.length,
+                  itemBuilder: (context, index) {
+                    ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
+                        chatRoomSnapshot.docs[index].data()
+                            as Map<String, dynamic>);
 
-                      List<String> participantKeys = participants.keys.toList();
-                      participantKeys.remove(widget.userModal.uid);
-                      return FutureBuilder(
-                        future:
-                            FirebaseHelper.getUserModalById(participantKeys[0]),
-                        builder: (context, userData) {
-                          if (userData.connectionState ==
-                              ConnectionState.done) {
-                            if (userData.data != null) {
-                              UserModal targetUser = userData.data as UserModal;
+                    Map<String, dynamic> participants =
+                        chatRoomModel.participants!;
 
-                              return ListTile(
+                    List<String> participantKeys = participants.keys.toList();
+                    participantKeys.remove(widget.userModal.uid);
+                    return FutureBuilder(
+                      future:
+                          FirebaseHelper.getUserModalById(participantKeys[0]),
+                      builder: (context, userData) {
+                        if (userData.connectionState == ConnectionState.done) {
+                          if (userData.data != null) {
+                            UserModal targetUser = userData.data as UserModal;
+
+                            return Card(
+                              elevation: 4, // Add elevation for a shadow effect
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(70)),
+                              child: ListTile(
+                                tileColor: Color.fromARGB(255, 244, 244, 246),
+                                textColor: Color.fromARGB(255, 37, 36, 37),
                                 onTap: () {
-                                   // markMessageAsSeen(chatRoomModel,);
+                                  // markMessageAsSeen(chatRoomModel,);
                                   // markMessagesAsSeen(
                                   //     widget.chatroom, widget.userModal);
                                   Navigator.push(
@@ -250,33 +267,33 @@ class _HomePageState extends State<HomePage> {
                                               .secondary,
                                         ),
                                       ),
-                              );
-                            } else {
-                              return Container();
-                            }
+                              ),
+                            );
                           } else {
                             return Container();
                           }
-                        },
-                      );
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(snapshot.error.toString()),
-                  );
-                } else {
-                  return Center(
-                    child: Text("No Chats"),
-                  );
-                }
+                        } else {
+                          return Container();
+                        }
+                      },
+                    );
+                  },
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
               } else {
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: Text("No Chats"),
                 );
               }
-            },
-          ),
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -292,7 +309,7 @@ class _HomePageState extends State<HomePage> {
   }
   // Future<void> markMessageAsUnseen(MessageModel message) async {
   //    if (chatroom != null && message.seen && message.sender != widget.userModal.uid) {
-   
+
   //   // if (message.seen && message.sender != widget.userModal.uid) {
   //     // Update the 'seen' field of the specific message in Firestore
   //     await FirebaseFirestore.instance
